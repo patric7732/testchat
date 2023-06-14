@@ -1,44 +1,37 @@
 const Sequelize = require("sequelize");
 
-class chatRoom extends Sequelize.Model {
+class chatParticipant extends Sequelize.Model {
   static init(sequelize) {
     super.init(
       {
-        chatRoomId: {
+        ChatParticipantId: {
           allowNull: false,
           autoIncrement: true,
           primaryKey: true,
           type: Sequelize.INTEGER,
         },
-        userId: {
+        user_id: {
           allowNull: false,
           type: Sequelize.INTEGER,
         },
-        userId2: {
+        room_id: {
           allowNull: false,
           type: Sequelize.INTEGER,
-        },
-        roomNum: {
-          allowNull: false,
-          type: Sequelize.STRING,
         },
       },
       {
         sequelize,
         timstamps: true,
-        modelName: "ChatRoom",
+        modelName: "ChatParticipant",
       }
     );
   }
   static associate(db) {
-    db.ChatRoom.hasMany(db.ChatParticipant, {
+    db.chatParticipant.belongsTo(db.ChatRoom, {
       foreignKey: { name: "chatRoomId", allowNull: true },
-    });
-    db.ChatRoom.belongsTo(db.User, {
-      foreignKey: { name: "userId", allowNull: true },
       onDelete: "cascade",
     });
   }
 }
 
-module.exports = chatRoom;
+module.exports = chatParticipant;
